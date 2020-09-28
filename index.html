@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>rhythm trainer</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.39/build/Tone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/webmidi"></script>
+
+    <!-- <script src="https://raw.githubusercontent.com/allexks/musical-inspiration/master/js/dependencies/abcjs_basic_5.11.0-min.js"></script> -->
+    <!-- <script src="https://www.abcjs.net/abcjs_basic_5.9.1-min.js"></script> -->
+    
+  </head>
+  <body>
+    <button id="start">
+      Start
+    </button>
+    <button id="stop">
+      Stop
+    </button>
+    <span id="beat">0</span>
+    <label>
+     BPM <input type="range" id="bpm" min="30", value="60", max="120">
+    </label>
+    <div>
+      hit_notes=<span id="hit_notes"></span>
+    </div>
+    <div>
+      missed_notes=<span id="missed_notes"></span>
+    </div>
+    <div>
+      wrong_hits=<span id="wrong_hits"></span>
+    </div>
+    <script src="ds.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
