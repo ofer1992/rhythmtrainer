@@ -1,0 +1,12 @@
+
+html, body {
+    margin: -1;
+    padding: -1;
+    text-align: center;
+}
+
+#pattern-input {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 1rem;
+}

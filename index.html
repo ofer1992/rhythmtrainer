@@ -2,42 +2,56 @@
 <html>
   <head>
     <title>rhythm trainer</title>
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
     <!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tone@14.7.39/build/Tone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vexflow@3.0.9/releases/vexflow-debug.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/webmidi"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nexusui@latest/dist/NexusUI.js"></script>
+
 
     <!-- <script src="https://raw.githubusercontent.com/allexks/musical-inspiration/master/js/dependencies/abcjs_basic_5.11.0-min.js"></script> -->
     <!-- <script src="https://www.abcjs.net/abcjs_basic_5.9.1-min.js"></script> -->
     
   </head>
   <body>
-    <button id="start">
-      Start
-    </button>
-    <button id="stop">
-      Stop
-    </button>
-    <span id="beat">0</span>
-    <label>
-     BPM <input type="range" id="bpm" min="30", value="60", max="120">
-    </label>
-    <div>
-      hit_notes=<span id="hit_notes"></span>
+    <h1>Pattern Practice</h1>
+    <div id="sheet-display"></div>
+    <div id="control">
+      <button id="start">
+        Start
+      </button>
+      <button id="stop">
+        Stop
+      </button>
+      <span id="beat">0</span>
+      <label>
+        BPM <input type="range" id="bpm" min="30", value="60", max="120">
+      </label>
     </div>
-    <div>
-      missed_notes=<span id="missed_notes"></span>
+    <div id="pattern-input">
+      <label>
+        left pattern <input type="text"> <button id="load-left-pattern"> load </button>
+      </label>
+      <div id="sequencer"></div>
     </div>
-    <div>
-      wrong_hits=<span id="wrong_hits"></span>
+    <div id="debug">
+      Debug:
+      <div>
+        hit_notes=<span id="hit_notes"></span>
+      </div>
+      <div>
+        missed_notes=<span id="missed_notes"></span>
+      </div>
+      <div>
+        wrong_hits=<span id="wrong_hits"></span>
+      </div>
     </div>
+    <div id='boo'></div>
     <script src="ds.js"></script>
+    <script src="parser.js"></script>
+    <script src="gui.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
