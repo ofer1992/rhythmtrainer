@@ -1,29 +1,34 @@
+/* eslint-disable no-undef */
+import {Targets} from '/ds.js'
+import {Midi} from '/midi.js'
+import {parseEasyScore} from '/parser.js'
+import {Display} from '/gui.js'
+
 let offset = 0.1 // 100ms 
 let hit_notes = new Targets(offset);
 let beat = 0;
 let missed = [];
 let wrong = [];
-let midiInput;
+new Midi(document.getElementById('midi-input'), listener);
+Tone.Transport.bpm.value = 60;
+
+let lead = new Tone.Synth({
+    oscillator: { type: 'sawtooth' },
+    volume: -7
+});
+let leadFilter = new Tone.Filter({ type: 'lowpass', frequency: 4000 }).toDestination();
+lead.connect(leadFilter);
 
 let formatArr = (arr) => {
     return (arr.map(e => e.note+","+e.time)).toString();
 };
 
-let patterns = {};
-const loadPatterns = async () => {
-    const response = await fetch("patterns.json");
-    const json = await response.json();
-    patterns = json;
-    let parsedLeft = parseEasyScore(patterns["testing"].notes);
-    let leftPattern = parsedLeft.tone;
-    let leftNotes = parsedLeft.notes;
-    display.displayNotes(leftNotes);
-
-    let leftPart = new Tone.Part((time, notes) => {
-        note = notes[0]; // TODO handle chords eventually
+function hittableSequence(pattern, length) {
+    let part = new Tone.Part((time, notes) => {
+        let note = notes; // TODO handle chords eventually
         let e = { note: note, time: time + offset };
         Tone.Transport.scheduleOnce(() => hit_notes.add(e), time);
-        lead.triggerAttackRelease(note, 0.1, time + offset);
+        lead.triggerAttackRelease(note.note, 0.1, time + offset);
         // console.log(Tone.Transport.context.currentTime,time);
         Tone.Transport.scheduleOnce(() => {
             let i = hit_notes.remove(e)
@@ -33,11 +38,44 @@ const loadPatterns = async () => {
             document.getElementById("missed_notes").innerText = formatArr(missed);
         }, time + 2 * offset);
         // console.log(hit_notes);
-    }, leftPattern).start();
+    }, pattern).start();
 
-    leftPart.loop = true;
-    leftPart.loopStart = 0;
-    leftPart.loopEnd = '1m';
+    part.loop = true;
+    part.loopStart = 0;
+    part.loopEnd = length;
+    return part;
+}
+
+let patterns = {};
+const loadPatterns = async () => {
+    const response = await fetch("patterns.json");
+    const json = await response.json();
+    patterns = json;
+    let parsedLeft = parseEasyScore(patterns["testing"].notes);
+    let leftPattern = parsedLeft.tone;
+    let leftNotes = parsedLeft.notes;
+    display.displayNotes(leftPattern, leftNotes);
+
+    // let leftPart = new Tone.Part((time, notes) => {
+    //     let note = notes; // TODO handle chords eventually
+    //     let e = { note: note, time: time + offset };
+    //     Tone.Transport.scheduleOnce(() => hit_notes.add(e), time);
+    //     lead.triggerAttackRelease(note.note, 0.1, time + offset);
+    //     // console.log(Tone.Transport.context.currentTime,time);
+    //     Tone.Transport.scheduleOnce(() => {
+    //         let i = hit_notes.remove(e)
+    //         if (i != -1) {
+    //             missed.push(e);
+    //         }
+    //         document.getElementById("missed_notes").innerText = formatArr(missed);
+    //     }, time + 2 * offset);
+    //     // console.log(hit_notes);
+    // }, leftPattern).start();
+
+    // leftPart.loop = true;
+    // leftPart.loopStart = 0;
+    // leftPart.loopEnd = '1m';
+    hittableSequence(leftPattern, '1m');
 }
 loadPatterns();
 
@@ -51,12 +89,6 @@ let display = new Display('sheet-display');
 // ['0:3', 'G3']
 // ];
 
-let lead = new Tone.Synth({
-    oscillator: { type: 'sawtooth' },
-    volume: -7
-});
-let leadFilter = new Tone.Filter({ type: 'lowpass', frequency: 4000 }).toDestination();
-lead.connect(leadFilter);
 
 let rightPart = new Tone.Part((time, note) => {
     clickPlayer.start(time + offset);
@@ -87,6 +119,7 @@ document.getElementById("stop").onclick = async () => {
 document.getElementById("bpm").oninput = (evt) => {
     let newBpm = evt.target.value;
     Tone.Transport.bpm.value = newBpm;
+    document.getElementById("bpm-num").innerText = newBpm;
 }
 
 let sequencer = new Nexus.Sequencer("#sequencer", {
@@ -119,13 +152,3 @@ function listener(e) {
     document.getElementById("wrong_hits").innerText = formatArr(wrong);
     // console.log(hit_notes.hit(n), n);
 }
-
-WebMidi.enable(function (err) {
-    if (err) {
-        console.log("WebMidi could not be enabled.", err);
-    } else {
-        console.log("WebMidi enabled!");
-    }
-    midiInput = WebMidi.getInputByName("Roland Digital Piano");
-    midiInput.addListener('noteon', "all", listener);
-});

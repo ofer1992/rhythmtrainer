@@ -6,7 +6,7 @@
     - https://github.com/0xfe/vexflow/blob/f7197ee18fa3a5ee02b9fbb5cfbf1272dd788fba/src/easyscore.js
     - https://github.com/0xfe/vexflow/blob/master/src/tables.js (for duration stuff)
  */
-
+import {Note} from '/ds.js'
 const VF = Vex.Flow; // TODO this global will appear again..
 const DEBUG_PARSER = false;
 function L(...args) { if (DEBUG_PARSER) Vex.L('Vex.Flow.EasyScore', args); }
@@ -146,10 +146,12 @@ class Builder {
 function parseEasyScore(line) {
     // Create a VexFlow renderer attaced to the DIV element "boo"
     let vf = new VF.Factory({ renderer: { elementId: 'boo' } });
-    score = vf.EasyScore({builder: new Builder(vf)});
+    let score = vf.EasyScore({builder: new Builder(vf)});
     score.parse(line);
-    pattern = score.builder.getElements().tone;
-    cumsum = (sum => value => sum += value)(-pattern[0][0]);
-    return {tone: pattern.map(e => [cumsum(e[0]), e[1]]), notes: score.builder.getElements().notes};
+    let pattern = score.builder.getElements().tone;
+    let cumsum = (sum => value => sum += value)(-pattern[0][0]);
+    return {tone: pattern.map(e => [cumsum(e[0]), new Note(e[1][0], e[0])]), notes: score.builder.getElements().notes};
 
 }
+
+export {parseEasyScore};
