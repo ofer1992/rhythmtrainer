@@ -16,9 +16,28 @@ Only supporting 4/4 time signature, 1 bar patterns.
 
 ## Dev
 
-Parts to tackle:
-- input from user - already done before using vexflow fast input and parsed. perhaps can be done again.
-  - hijacking easyscore parser
+### Parts to tackle:
+#### input from user
+already done before using vexflow fast input and parsed. perhaps can be done again. hijacking easyscore parser.
+turns out the easyscore notation lacks a lot of expressiveness. for example, i can't notate triplets or ties.
+i think i should add a layer of abstraction, so i parse to my own representation of the pattern and use that as my data,
+to display, play and hit. Then i can have as many parsers as i wish.
+
+so, what is the pattern specification?
+- time signature
+- number of measures/length
+- clef
+- key
+- notes (including chords) and rests, with supports for tuplets and ties
+
+my assumptions:
+- only one staff
+- only one voice (no overlapping notes, except chords as a unit)
+- one key
+- whole number of measures
+
+ 
+
 - display - vexflow or abcjs? abcjs might be easier to interact with but interactivity isn't crucial at first.
   - going with vexflow
 - timing is handled with tone.js

@@ -1,7 +1,20 @@
 {
     "testing": {
-        "notes": "C#5/q, B4, A4, G#4",
+        "notes": "C#3/q, B2, A2, G#2",
         "time_signature": "4/4",
-        "clef": "bass"
+        "clef": "bass",
+        "length": "1m"
+    },
+    "chameleon": {
+        "notes": "Bb2/8., Ab3., Bb3/q, C3/8, C#3, D3",
+        "time_signature": "4/4",
+        "clef": "bass",
+        "length": "1m"
+    },
+    "chameleon_full": {
+        "notes": "Bb2/8., Ab3., Bb3/q, C3/8, C#3, D3, Eb3/8., Bb3., Db4/q, G2/8, G#2, A2",
+        "time_signature": "4/4",
+        "clef": "bass",
+        "length": "2m"
     }
 }

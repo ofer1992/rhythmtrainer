@@ -1,0 +1,17 @@
+<script src="https://cdn.jsdelivr.net/npm/vexflow@3.0.9/releases/vexflow-debug.js"></script>
+
+<b>This sandbox uses the latest release of the VexFlow NPM.</b>
+
+<div id="boo"></div>
+
+<script> 
+// Create an SVG renderer and attach it to the DIV element named "boo".
+var vf = new Vex.Flow.Factory({renderer: {elementId: 'boo'}});
+var score = vf.EasyScore();
+var system = vf.System();
+system.addStave({
+  voices: [score.voice(score.notes('Bb2/8., Ab3., Bb3/q, C3/8, C#3, D3', {clef: 'bass'}))]
+}).addClef('bass').addTimeSignature('4/4');
+
+vf.draw();
+</script>

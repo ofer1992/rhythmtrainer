@@ -24,7 +24,7 @@ class Display {
         this.groups = {};
     }
 
-    displaySequencer(seq) {
+    displaySequencer(seq, seq_notes) {
         if (this.groups['seq']) {
             this.context.svg.removeChild(this.groups['seq']);
         }
@@ -35,6 +35,16 @@ class Display {
             notes.push(
                 new VF.StaveNote({ clef: "treble", keys: ["c/5"], duration: dur })
             )
+            if (dur == '16') {
+                seq_notes[i].callbacks = []
+                seq_notes[i].connect((status) => {
+                    if (status == NoteStatus.HIT) {
+                        colorNote(notes[i], 'green');
+                    } else if (status == NoteStatus.MISSED) {
+                        colorNote(notes[i], 'red');
+                    }
+                });
+            }
         }
         let voice = new VF.Voice({ num_beats: 4, beat_value: 4 });
         voice.addTickables(notes);
@@ -48,7 +58,7 @@ class Display {
             this.context.svg.removeChild(this.groups['notes']);
         }
         this.groups['notes'] = this.context.openGroup();
-        let voice = new VF.Voice({ num_beats: 4, beat_value: 4 });
+        let voice = new VF.Voice({ num_beats: 8, beat_value: 4 });
         voice.addTickables(notes);
         let formatter = new VF.Formatter().joinVoices([voice]).format([voice], 450);
         voice.draw(this.context, this.stave2);

@@ -23,7 +23,7 @@ class Builder {
   reset(options = {}) {
     this.options = {
       stem: 'auto',
-      clef: 'treble',
+      clef: 'bass', // TODO find way to affect this
     };
     this.elements = {
       notes: [],
