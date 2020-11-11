@@ -1,3 +1,5 @@
+try at [https://ofer1992.github.io/rhythmtrainer/](https://ofer1992.github.io/rhythmtrainer/)
+
 ## synopsis
 
 Training left and right hand independence for pop, rock, blues etc genres. The idea is to drill the left hand pattern of choice over varying right hand rhythms.
